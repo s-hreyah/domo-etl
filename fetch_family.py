@@ -6,6 +6,12 @@ from config.env import rfam_family_ds_id
 from connection import connect_db
 from pydomo_utils import generate_schema_columns, upload_data_to_dataset
 from utils import get_data
+import logging
+
+from logger_config import setup_logging
+
+setup_logging(module_name="all_countries_detail")
+logger = logging.getLogger(__name__)
 
 def fetch_family():
     query = "SELECT * FROM family "
@@ -14,7 +20,7 @@ def fetch_family():
     df = get_data(query)
     file_path=os.path.join(folder_Name,"rfam_family.csv")
     df.to_csv(file_path,index=False)
-    print("CSV saved at:",file_path)
+    logger.info("CSV saved at:",file_path)
 
 upload_data_to_dataset("rfam_output/rfam_family.csv",rfam_family_ds_id)
 
